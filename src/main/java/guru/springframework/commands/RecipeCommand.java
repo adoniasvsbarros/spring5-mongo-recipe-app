@@ -11,18 +11,17 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.URL;
 
+import guru.springframework.domain.Difficulty;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-
-import guru.springframework.domain.Difficulty;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class RecipeCommand {
-    private Long id;
+    private String id;
     
     @NotBlank
     @Size(min = 3, max = 255)

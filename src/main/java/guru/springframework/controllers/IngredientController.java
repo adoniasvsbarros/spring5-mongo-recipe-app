@@ -35,7 +35,7 @@ public class IngredientController {
 		log.debug("Getting ingredients list for recipe id: " + recipeId);
 
 		// use command object to avoid lazy load errors in Thymeleaf
-		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
+		model.addAttribute("recipe", recipeService.findCommandById(recipeId));
 
 		return "recipe/ingredient/list";
 
@@ -45,36 +45,35 @@ public class IngredientController {
 	public String showIngredients(@PathVariable String recipeId, @PathVariable String id, Model model) {
 
 		model.addAttribute("ingredient",
-				ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+				ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
 
 		return "recipe/ingredient/show";
 	}
 
-	
-    @GetMapping("recipe/{recipeId}/ingredient/new")
-    public String newIngredient(@PathVariable String recipeId, Model model){
+	@GetMapping("recipe/{recipeId}/ingredient/new")
+	public String newIngredient(@PathVariable String recipeId, Model model) {
 
-        //make sure we have a good id value
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
-        //todo raise exception if null
+		// make sure we have a good id value
+		RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
+		// todo raise exception if null
 
-        //need to return back parent id for hidden form property
-        IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
-        model.addAttribute("ingredient", ingredientCommand);
+		// need to return back parent id for hidden form property
+		IngredientCommand ingredientCommand = new IngredientCommand();
+		ingredientCommand.setRecipeId(recipeId);
+		model.addAttribute("ingredient", ingredientCommand);
 
-        //init uom
-        ingredientCommand.setUom(new UnitOfMeasureCommand());
+		// init uom
+		ingredientCommand.setUom(new UnitOfMeasureCommand());
 
-        model.addAttribute("uomList",  unitOfMeasureService.listAllUoms());
+		model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
 
-        return "recipe/ingredient/ingredientform";
-    }
-    
+		return "recipe/ingredient/ingredientform";
+	}
+
 	@GetMapping("recipe/{recipeId}/ingredient/{id}/update")
 	public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
 		model.addAttribute("ingredient",
-				ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+				ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
 
 		model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
 		return "recipe/ingredient/ingredientform";
@@ -89,14 +88,13 @@ public class IngredientController {
 
 		return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
 	}
-	
+
 	@GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
 	public String deleteIngredient(@PathVariable String recipeId, @PathVariable String id) {
 		log.debug("Deleting ingredient id: " + id);
-		
-		ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
-		
-		return "redirect:/recipe/"+ recipeId +"/ingredients";
+
+		ingredientService.deleteById(recipeId, id);
+
+		return "redirect:/recipe/" + recipeId + "/ingredients";
 	}
 }
-
