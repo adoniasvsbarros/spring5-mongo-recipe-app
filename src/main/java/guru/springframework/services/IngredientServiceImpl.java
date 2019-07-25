@@ -32,7 +32,7 @@ public class IngredientServiceImpl implements IngredientService {
 		this.unitOfMeasureRepository = unitOfMeasureRepository;
 	}
 
-	@Override
+    @Override
     public IngredientCommand findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
 
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
